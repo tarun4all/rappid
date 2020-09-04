@@ -1,0 +1,29 @@
+{
+    "cells": [
+        {
+            "type": "qad.Question",
+            "size": {
+                "width": 201.8984375,
+                "height": 125
+            },
+            "position": {
+                "x": 45,
+                "y": 38
+            },
+            "angle": 0,
+            "question": "Does the thing work?",
+            "options": [
+                {
+                    "id": "yes",
+                    "text": "Yes"
+                },
+                {
+                    "id": "no",
+                    "text": "No"
+                }
+            ],
+            "id": "123456",
+            "z": 1
+        }
+    ]
+}
