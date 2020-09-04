@@ -303,63 +303,44 @@ app.AppView = Backbone.View.extend({
         });
     },
 
-    loadExample: function() {
-        const data = {
-            "cells": [
-                {
-                    "type": "qad.Question",
-                    "size": {
-                        "width": 201.8984375,
-                        "height": 125
-                    },
-                    "position": {
-                        "x": 45,
-                        "y": 38
-                    },
-                    "angle": 0,
-                    "question": "Does the thing work?",
-                    "options": [
-                        {
-                            "id": "yes",
-                            "text": "Yes"
-                        },
-                        {
-                            "id": "no",
-                            "text": "No"
-                        }
-                    ],
-                    "id": "123456",
-                    "z": 1
+    loadExample: async function() {
+        let apiData = await fetch('http://localhost:3000/api/getQuestionnaire'), size = 0;
+        apiData = await apiData.json();
+        const data = apiData.map((el, i) => {
+            size = size + 200;
+            return {
+                "type": "qad.Question",
+                "size": {
+                    "width": 201.8984375,
+                    "height": 125
                 },
-                {
-                    "type": "qad.Question",
-                    "size": {
-                        "width": 201.8984375,
-                        "height": 125
+                "position": {
+                    "x": size,
+                    "y": 38
+                },
+                "angle": 0,
+                "question": el.label,
+                "options": [
+                    {
+                        "id": "score",
+                        "text": "Enter Score"
                     },
-                    "position": {
-                        "x": 345,
-                        "y": 38
+                    {
+                        "id": "yes",
+                        "text": "Yes"
                     },
-                    "angle": 0,
-                    "question": "Does the thing work?",
-                    "options": [
-                        {
-                            "id": "yes",
-                            "text": "Yes"
-                        },
-                        {
-                            "id": "no",
-                            "text": "No"
-                        }
-                    ],
-                    "id": "123456789",
-                    "z": 1
-                }
-            ]
-        };
+                    {
+                        "id": "no",
+                        "text": "No"
+                    }
+                ],
+                "id": el._id,
+                "z": 1
+            }
+        })
+        console.log(data);
         //this.graph.fromJSON({"cells":[{"type":"qad.Question","size":{"width":251.8984375,"height":66.8},"inPorts":[{"id":"in","label":"In"}],"outPorts":[{"id":"yes","label":"Yes"},{"id":"no","label":"No"}],"position":{"x":34,"y":140},"angle":0,"question":"Does the thing work?","id":"8c1450b5-ca1f-4222-9a11-69c05e67c6b6","z":1,"attrs":{".label":{"text":"Does the thing work?"},".inPorts>.port0>.port-label":{"text":"In"},".inPorts>.port0>.port-body":{"port":{"id":"in","type":"in"},"fill":"#f6f6f6"},".inPorts>.port0":{"ref":".body","ref-y":0.5},".outPorts>.port0>.port-label":{"text":"Yes"},".outPorts>.port0>.port-body":{"port":{"id":"yes","type":"out"},"fill":"#31d0c6"},".outPorts>.port0":{"ref":".body","ref-y":0.25,"ref-dx":0},".outPorts>.port1>.port-label":{"text":"No"},".outPorts>.port1>.port-body":{"port":{"id":"no","type":"out"},"fill":"#fe854f"},".outPorts>.port1":{"ref":".body","ref-y":0.75,"ref-dx":0}}},{"type":"qad.Answer","size":{"width":223.796875,"height":66.8},"inPorts":[{"id":"in","label":"In"}],"outPorts":[{"id":"yes","label":"Yes"},{"id":"no","label":"No"}],"position":{"x":311,"y":26},"angle":0,"answer":"Don't mess about with it.","id":"d90182dd-46f7-4392-a483-4c9c2c9c3715","z":2,"attrs":{"text":{"text":"Don't mess about with it."}}},{"type":"qad.Question","size":{"width":245.6484375,"height":66.8},"inPorts":[{"id":"in","label":"In"}],"outPorts":[{"id":"yes","label":"Yes"},{"id":"no","label":"No"}],"position":{"x":127,"y":308},"angle":0,"question":"Did you mess about with it?","id":"3ff1e021-fece-4ec7-8ce9-4420d90901d8","z":3,"attrs":{".label":{"text":"Did you mess about with it?"},".inPorts>.port0>.port-label":{"text":"In"},".inPorts>.port0>.port-body":{"port":{"id":"in","type":"in"},"fill":"#f6f6f6"},".inPorts>.port0":{"ref":".body","ref-y":0.5},".outPorts>.port0>.port-label":{"text":"Yes"},".outPorts>.port0>.port-body":{"port":{"id":"yes","type":"out"},"fill":"#31d0c6"},".outPorts>.port0":{"ref":".body","ref-y":0.25,"ref-dx":0},".outPorts>.port1>.port-label":{"text":"No"},".outPorts>.port1>.port-body":{"port":{"id":"no","type":"out"},"fill":"#fe854f"},".outPorts>.port1":{"ref":".body","ref-y":0.75,"ref-dx":0}}},{"type":"link","source":{"id":"8c1450b5-ca1f-4222-9a11-69c05e67c6b6","selector":"g:nth-child(1) g:nth-child(4) g:nth-child(1) circle:nth-child(1)     ","port":"yes"},"target":{"id":"d90182dd-46f7-4392-a483-4c9c2c9c3715"},"id":"45c5f30e-bc19-4fda-97f2-b55ea7cab916","embeds":"","z":4,"attrs":{".marker-target":{"d":"M 10 0 L 0 5 L 10 10 z","fill":"#6a6c8a","stroke":"#6a6c8a"},".connection":{"stroke":"#6a6c8a","stroke-width":2}}},{"type":"qad.Answer","size":{"width":151.7890625,"height":66.8},"inPorts":[{"id":"in","label":"In"}],"outPorts":[{"id":"yes","label":"Yes"},{"id":"no","label":"No"}],"position":{"x":499,"y":266},"angle":0,"answer":"You're an idiot","id":"9bfbdacd-ae3e-4982-824a-1cbba53603a3","z":5,"attrs":{"text":{"text":"You're an idiot"}}},{"type":"link","source":{"id":"3ff1e021-fece-4ec7-8ce9-4420d90901d8","selector":"g:nth-child(1) g:nth-child(4) g:nth-child(1) circle:nth-child(1)     ","port":"yes"},"target":{"id":"9bfbdacd-ae3e-4982-824a-1cbba53603a3"},"id":"f2c31a0d-c424-4653-a114-94c6d279d264","embeds":"","z":6,"attrs":{".marker-target":{"d":"M 10 0 L 0 5 L 10 10 z","fill":"#6a6c8a","stroke":"#6a6c8a"},".connection":{"stroke":"#6a6c8a","stroke-width":2}}},{"type":"qad.Question","size":{"width":205.6171875,"height":66.8},"inPorts":[{"id":"in","label":"In"}],"outPorts":[{"id":"yes","label":"Yes"},{"id":"no","label":"No"}],"position":{"x":208,"y":465},"angle":0,"question":"Will you get screwed?","id":"05c074aa-140a-4b81-8ba7-648675ccef6f","z":8,"attrs":{".label":{"text":"Will you get screwed?"},".inPorts>.port0>.port-label":{"text":"In"},".inPorts>.port0>.port-body":{"port":{"id":"in","type":"in"},"fill":"#f6f6f6"},".inPorts>.port0":{"ref":".body","ref-y":0.5},".outPorts>.port0>.port-label":{"text":"Yes"},".outPorts>.port0>.port-body":{"port":{"id":"yes","type":"out"},"fill":"#31d0c6"},".outPorts>.port0":{"ref":".body","ref-y":0.25,"ref-dx":0},".outPorts>.port1>.port-label":{"text":"No"},".outPorts>.port1>.port-body":{"port":{"id":"no","type":"out"},"fill":"#fe854f"},".outPorts>.port1":{"ref":".body","ref-y":0.75,"ref-dx":0}}},{"type":"qad.Answer","size":{"width":142.5,"height":66.8},"inPorts":[{"id":"in","label":"In"}],"outPorts":[{"id":"yes","label":"Yes"},{"id":"no","label":"No"}],"position":{"x":530,"y":519},"angle":0,"answer":"Put it in a bin","id":"df22d7c0-a59e-4963-879b-a8de67f189b6","z":9,"attrs":{"text":{"text":"Put it in a bin"}}},{"type":"link","source":{"id":"8c1450b5-ca1f-4222-9a11-69c05e67c6b6","selector":"g:nth-child(1) g:nth-child(4) g:nth-child(2) circle:nth-child(1)     ","port":"no"},"target":{"id":"3ff1e021-fece-4ec7-8ce9-4420d90901d8","selector":"g:nth-child(1) g:nth-child(3) g:nth-child(1) circle:nth-child(1)     ","port":"in"},"id":"a65339c9-01c8-4fa5-a181-d72ecaf8a7ec","embeds":"","z":10,"vertices":[{"x":334,"y":224},{"x":76,"y":304}],"attrs":{".marker-target":{"d":"M 10 0 L 0 5 L 10 10 z","fill":"#6a6c8a","stroke":"#6a6c8a"},".connection":{"stroke":"#6a6c8a","stroke-width":2}}},{"type":"link","source":{"id":"3ff1e021-fece-4ec7-8ce9-4420d90901d8","selector":"g:nth-child(1) g:nth-child(4) g:nth-child(2) circle:nth-child(1)     ","port":"no"},"target":{"id":"05c074aa-140a-4b81-8ba7-648675ccef6f","selector":"g:nth-child(1) g:nth-child(3) g:nth-child(1) circle:nth-child(1)     ","port":"in"},"id":"85430e16-8a6d-43c9-ab79-a468f3435991","embeds":"","z":11,"vertices":[{"x":412,"y":412},{"x":174,"y":457}],"attrs":{".marker-target":{"d":"M 10 0 L 0 5 L 10 10 z","fill":"#6a6c8a","stroke":"#6a6c8a"},".connection":{"stroke":"#6a6c8a","stroke-width":2}}},{"type":"link","source":{"id":"05c074aa-140a-4b81-8ba7-648675ccef6f","selector":"g:nth-child(1) g:nth-child(4) g:nth-child(2) circle:nth-child(1)     ","port":"no"},"target":{"id":"df22d7c0-a59e-4963-879b-a8de67f189b6"},"id":"3bf86457-227f-437e-98b5-ccf73b489342","embeds":"","z":12,"attrs":{".marker-target":{"d":"M 10 0 L 0 5 L 10 10 z","fill":"#6a6c8a","stroke":"#6a6c8a"},".connection":{"stroke":"#6a6c8a","stroke-width":2}}},{"type":"qad.Answer","size":{"width":172.75,"height":66.8},"inPorts":[{"id":"in","label":"In"}],"outPorts":[{"id":"yes","label":"Yes"},{"id":"no","label":"No"}],"position":{"x":509,"y":402},"angle":0,"answer":"Poor boy","id":"162b05c4-bbda-42e5-b079-33aea3bad948","z":13,"attrs":{"text":{"text":"You poor bastard"}}},{"type":"link","source":{"id":"05c074aa-140a-4b81-8ba7-648675ccef6f","selector":"g:nth-child(1) g:nth-child(4) g:nth-child(1) circle:nth-child(1)     ","port":"yes"},"target":{"id":"162b05c4-bbda-42e5-b079-33aea3bad948"},"id":"fb898507-7eab-4f89-a75c-5f886b73b1c5","embeds":"","z":14,"attrs":{".marker-target":{"d":"M 10 0 L 0 5 L 10 10 z","fill":"#6a6c8a","stroke":"#6a6c8a"},".connection":{"stroke":"#6a6c8a","stroke-width":2}}}]});
-        this.graph.fromJSON(data);
+        this.graph.fromJSON({cells: data});
     },
 
     clear: function() {
@@ -396,7 +377,32 @@ app.AppView = Backbone.View.extend({
     },
 
     exportJSON: function() {
-        const data = this.graph.toJSON();
-        console.log(data);
+        const {cells} = this.graph.toJSON();
+
+        const questions = cells.filter(cell => cell.type == 'qad.Question').reduce(function(result, item, index, array) {
+            result[item.id] = item;
+            return result;
+        }, {});
+        
+        cells.filter(cell => cell.type == "link").forEach(el => {
+            questions[el.source.id][el.source.port] = el.target.id
+        });
+
+        console.log(questions);
+        fetch('http://localhost:3000/api/updateRuleEngine', {
+            method: 'POST',
+            body: {rule: 'aa'}
+        })
+        .then((response) => {
+            return response.json();
+            alert("Rules updated");
+        })
+        .then(response => {
+            if (response.error) {
+                throw new Error(response.error || "Something went wrong!");
+            } else {
+                return response
+            }
+        })
     }
 });
